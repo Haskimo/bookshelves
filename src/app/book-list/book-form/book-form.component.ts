@@ -12,6 +12,9 @@ import { Router } from '@angular/router';
 export class BookFormComponent implements OnInit {
 
   bookForm: FormGroup;
+  fileIsUploading = false;
+  fileUrl: string; // Download URL string créé à partir de la date au moment du téléchargement
+  fileUploaded = false;
 
   constructor(private formBuilder: FormBuilder, private booksService: BooksService,
               private router: Router) { }
@@ -34,7 +37,26 @@ export class BookFormComponent implements OnInit {
     const synopsis = this.bookForm.get('synopsis').value;
     const newBook = new Book(title, author);
     newBook.synopsis = synopsis;
+    if(this.fileUrl && this.fileUrl !== '') { // Si l'URL existe et n'est pas vide
+      newBook.photo = this.fileUrl;
+    }
     this.booksService.createNewBook(newBook);
     this.router.navigate(['/books']);
   }
+
+  detectFiles(event) { // Détecte un évènement du DOM
+    this.onUploadFile(event.target.files[0]); // files[0] car un seul fichier
+  }
+
+  onUploadFile(file: File) {
+    this.fileIsUploading = true;
+    this.booksService.uploadFile(file).then( // .then car méthode asynchrone car téléchargement ça prend du temps
+      (url: string) => {
+        this.fileUrl = url;
+        this.fileIsUploading = false;
+        this.fileUploaded = true;
+      }
+    );
+  }
+
 }

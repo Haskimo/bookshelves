@@ -22,7 +22,8 @@ export class BookListComponent implements OnInit, OnDestroy {
         this.books = books;
       }
     );
-    this.booksService.emitBooks();
+    this.booksService.getBooks(); // Récupérer depuis firebase (s'il y en a)
+    this.booksService.emitBooks(); // Emmettre
   }
 
   // Clic bouton Nouveau Livre

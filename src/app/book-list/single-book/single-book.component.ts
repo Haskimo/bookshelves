@@ -29,4 +29,5 @@ export class SingleBookComponent implements OnInit {
   onBack() { // Pour le retour en arrière
     this.router.navigate(['/books']);
   }
+  
 }
