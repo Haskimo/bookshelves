@@ -13,10 +13,10 @@ export class AuthGuardService implements CanActivate {
       (resolve, reject) => {
         firebase.auth().onAuthStateChanged(
           (user) => {
-            if(user) {
+            if(user) { // Si l'user a le droit de passer sur cette route => resolve : true
               resolve(true);
-            } else {
-              this.router.navigate(['/auth', 'signin']);
+            } else { // Sinon redirection
+              this.router.navigate(['/auth', 'signin']); // ATTENTION : on n'écrit pas directement /auth/signin
               resolve(false);
             }
           }
